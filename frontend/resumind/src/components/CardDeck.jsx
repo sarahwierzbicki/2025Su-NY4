@@ -18,14 +18,14 @@ const cardData = [
 ];
 
 
-const CardDeck = () => {
+const CardDeck = ({ onMatch }) => {
   const [cards, setCards] = useState(cardData);
   const [liked, setLiked] = useState([]);
 
   const handleSwipe = (direction, index) => {
     const swiped = cards[index];
     if (direction === 'right') {
-      setLiked((prev) => [...prev, swiped]);
+      onMatch(swiped);
     }
     setCards((prev) => prev.filter((_, i) => i !== index));
   };
@@ -70,28 +70,6 @@ const CardDeck = () => {
               </Card>
             </SwipeableCard>
           ))}
-        </Box>
-      </Box>
-
-      <Box sx={{ width: '35%', height: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'white' }}>
-        <AppBar position="static" color="default" elevation={1}>
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
-            <Box display="flex" alignItems="center">
-              <Avatar sx={{ mr: 1 }}>E</Avatar>
-              <Typography variant="subtitle1">ericlantz</Typography>
-            </Box>
-            <Button color="primary" size="small">Logout</Button>
-          </Toolbar>
-        </AppBar>
-        <Box sx={{ flex: 1, overflowY: 'auto', p: 2 }}>
-          <Typography variant="h6" gutterBottom>Matches</Typography>
-          <List>
-            {liked.map((job) => (
-              <ListItem key={job.id} sx={{ mb: 1, bgcolor: '#f9f9f9', borderRadius: 2 }}>
-                <ListItemText primary={job.title} />
-              </ListItem>
-            ))}
-          </List>
         </Box>
       </Box>
     </div>

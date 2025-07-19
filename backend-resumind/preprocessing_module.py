@@ -8,7 +8,7 @@ Original file is located at
 """
 
 #imports
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from docx import Document
 import spacy
 import numpy as np

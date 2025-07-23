@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 import os
+from pymongo import MongoClient
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
+import preprocessing_module
 
 app = Flask(__name__)
 import preprocessing_module
@@ -10,6 +13,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
+#mongodb connection
+client = MongoClient('mongodb://localhost:27017/')
+db = client['name']
+collection = db['data'}
 
 #load spacy model
 try:
@@ -43,8 +51,13 @@ def process_resume():
         os.remove(file_path)
 
         return jsonify({resume_text}), 200
-
+        
+    resume_text = request.json.get("resume_text")    
+    doc = process(resume_text)
+    resume_data = {"parsed_resume": doc, "resumeID": 12345, }
+    collection.insert_one(resume_data)
     #resume text will be returned and stored, find way to generate unique resume id  
-
-
+#route for prediction
+#in predict 
+@app.route('/predict_category', methods = ['GET']
 

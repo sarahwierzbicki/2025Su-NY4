@@ -58,6 +58,21 @@ def process_resume():
     collection.insert_one(resume_data)
     #resume text will be returned and stored, find way to generate unique resume id  
 #route for prediction
-#in predict 
+#in predict question fetching pasred text from unique resume id? or only 
 @app.route('/predict_category', methods = ['GET']
+def predict_category():
+    try:
+        data = request.get_json()
+        resumeID = data.get('resumeID')
 
+        resume_data = collection.find_one({'_id': resumeID})
+        predict_resume = mongo_data.get('parsed_resume')
+        input_data = {'inputs': parsed_resume)
+        category_result = response
+        return jsonify({'prediction': category_result}), 200
+    except Exception as e:
+        app.logger.error(f"Error during predicting: {e}")
+        return jsonify({'error': "Error occured!"}), 500
+
+#use category to search csv or dataframe and get matching jobs
+    

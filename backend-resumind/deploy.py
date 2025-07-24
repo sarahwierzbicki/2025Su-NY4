@@ -29,6 +29,4 @@ predictor = huggingface_model.deploy(
 	instance_type='ml.m5.xlarge' # ec2 instance type
 )
 
-predictor.predict({
-	"inputs": "resume_text",
-})
+predictor.predict(input_data)

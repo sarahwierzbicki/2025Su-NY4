@@ -17,7 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 #mongodb connection
 client = MongoClient('mongodb://localhost:27017/')
 db = client['name']
-collection = db['data'}
+collection = db['data']
 
 #load spacy model
 try:

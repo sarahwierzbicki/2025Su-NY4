@@ -63,9 +63,9 @@ def process_resume():
 
         resume_text = ""
         if filename.lower().endswith('.pdf'):
-            resume_text = get_pdf_text(file_path)
+            resume_text = preprocessing_module.get_pdf_text(file_path)
         elif filename.lower.endswith('.docx'):
-            resume_text = get_docx_text(file_path)
+            resume_text = preprocessing_module.get_docx_text(file_path)
         else:
             return jsonify({"Error": "Unsupported file type. Please upload either PDF or DOCX format."}), 400
 
@@ -75,13 +75,13 @@ def process_resume():
     #create random unique resumeid
     resume_id = str(uuid.uuid4())    
     resume_text = request.json.get("resume_text")    
-    doc = process(resume_text)
+    doc = process_resume(resume_text)
     resume_data = {"parsed_resume": doc, "resumeID": resume_id, }
     collection.insert_one(resume_data)
     #resume text will be returned and stored 
 
 #load job csv
-job_csv_path = os.getenv('C:\Users\sarwi\OneDrive\Desktop\flask api\jobpostingsfinalcsv.xlsx', 'jobpostingsfinalcsv.xlsx')
+job_csv_path = os.getenv('C:\Users\sarwi\OneDrive\Desktop\flask api\jobpostingsfinalcsv.xlsx', "jobs.csv")
 #adjust path as needed will be local compress for github
 df_jobs = pd.read_csv(job_csv_path)
 
@@ -94,7 +94,7 @@ def predict_category():
         resumeID = data.get('resumeID')
 
         resume_data = collection.find_one({'_id': resumeID})
-        predict_resume = mongo_data.get('parsed_resume')
+        predict_resume = resume_data.get('parsed_resume')
 
         input_data = {'inputs': predict_resume}
         #call model for inference
@@ -105,7 +105,7 @@ def predict_category():
         matches = df_jobs[match] 
         match_list = matches.to_dict(orient='records')
 
-        return jsonify({'predicted_category': category_response, 'job_recommendations': match_list})
+        return jsonify({'predicted_category': category_result, 'job_recommendations': match_list})
 
     except Exception as e:
         app.logger.error(f"Error during predicting: {e}")

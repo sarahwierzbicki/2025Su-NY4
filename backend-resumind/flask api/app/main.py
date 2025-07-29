@@ -81,7 +81,7 @@ def process_resume():
     #resume text will be returned and stored 
 
 #load job csv
-job_csv_path = os.getenv('C:\Users\sarwi\OneDrive\Desktop\flask api\jobpostingsfinalcsv.xlsx', "jobs.csv")
+job_csv_path = os.getenv('C:\Users\sarwi\OneDrive\Desktop\flask api\jobpostingsfinalcsv.xlsx', 'jobpostingsfinalcsv.xlsx')
 #adjust path as needed will be local compress for github
 df_jobs = pd.read_csv(job_csv_path)
 
